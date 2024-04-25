@@ -27,7 +27,8 @@ val apiVer = "0.38.2"
 val starterVer = "0.3.31"
 val baseVer = "0.4.23"
 val eduCoreVer = "0.2.2"
-val stdCoreVer = "0.0.1-SNAPSHOT"
+val stdCoreVer = "0.0.1"
+
 val openurp_edu_api = "org.openurp.edu" % "openurp-edu-api" % apiVer
 val openurp_stater_web = "org.openurp.starter" % "openurp-starter-web" % starterVer
 val openurp_base_tag = "org.openurp.base" % "openurp-base-tag" % baseVer
