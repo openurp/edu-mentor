@@ -18,11 +18,15 @@
 package org.openurp.edu.mentor.web.action
 
 import org.beangle.cdi.bind.BindModule
-import org.openurp.edu.clazz.domain.DefaultClazzProvider
+import org.openurp.edu.grade.domain.DefaultCourseGradeProvider
 
 class DefaultModule extends BindModule {
 
   override def binding(): Unit = {
     bind(classOf[GradeAction])
+    bind(classOf[StudentAction])
+    bind(classOf[ProgressAction])
+    bind(classOf[FailCourseAction])
+    bind("courseGradeProvider", classOf[DefaultCourseGradeProvider])
   }
 }

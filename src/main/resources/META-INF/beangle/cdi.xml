@@ -3,5 +3,6 @@
   <container>
     <module class="org.openurp.starter.web.ProjectModule"/>
     <module class="org.openurp.edu.mentor.web.action.DefaultModule"/>
+    <module class="org.openurp.std.graduation.service.DefaultModule" />
   </container>
 </cdi>
