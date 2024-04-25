@@ -17,26 +17,27 @@
 
 package org.openurp.edu.mentor.web.action
 
+import org.beangle.commons.bean.orderings.PropertyOrdering
+import org.beangle.commons.collection.Collections
 import org.beangle.data.dao.OqlBuilder
-import org.beangle.web.action.context.ActionContext
-import org.beangle.web.action.support.ParamSupport
 import org.beangle.web.action.view.View
-import org.beangle.web.servlet.util.RequestUtils
 import org.beangle.webmvc.support.action.{EntityAction, ExportSupport}
 import org.beangle.webmvc.support.helper.QueryHelper
-import org.openurp.base.model.Project
-import org.openurp.base.std.model.{Mentor, Student}
-import org.openurp.edu.grade.model.{CourseGrade, Grade}
+import org.openurp.base.model.{Project, Semester}
+import org.openurp.base.std.model.Student
+import org.openurp.code.edu.model.GradeType
+import org.openurp.edu.grade.domain.CourseGradeProvider
+import org.openurp.edu.grade.model.{CourseGrade, Grade, StdGpa}
 import org.openurp.starter.web.support.MentorSupport
+
+import scala.collection.mutable
 
 /** 成绩查询
  *
  */
-class GradeAction extends MentorSupport, EntityAction[CourseGrade], ParamSupport, ExportSupport[CourseGrade] {
+class GradeAction extends MentorSupport, EntityAction[CourseGrade], ExportSupport[CourseGrade] {
 
-  protected override def projectIndex(mentor: Mentor)(using project: Project): View = {
-    null
-  }
+  var courseGradeProvider: CourseGradeProvider = _
 
   def search(): View = {
     val project = getProject
@@ -49,7 +50,8 @@ class GradeAction extends MentorSupport, EntityAction[CourseGrade], ParamSupport
     val mentor = getMentor
     val project = getProject
     val query = OqlBuilder.from(classOf[CourseGrade], "courseGrade")
-    query.where("courseGrade.std.state.squad.mentor=:mentor", mentor.staff)
+    query.where("courseGrade.std.state.squad.mentor=:mentor or courseGrade.std.state.squad.master=:master",
+      mentor.staff, mentor.staff)
     query.where("courseGrade.std.project=:project", project)
     query.where("courseGrade.status=:published", Grade.Status.Published)
     QueryHelper.populate(query)
@@ -67,13 +69,29 @@ class GradeAction extends MentorSupport, EntityAction[CourseGrade], ParamSupport
   }
 
   def student(): View = {
-    val student = entityDao.get(classOf[Student], getLongId("student"))
-    val query = getQueryBuilder
-    query.limit(null)
-    query.where("courseGrade.std=:std", student)
-    val courseGrades = entityDao.search(query)
-    put("courseGrades", courseGrades)
-    put("std", student)
+    val std = entityDao.get(classOf[Student], getLongId("student"))
+    val grades = courseGradeProvider.getPublished(std)
+    put("stdGpa", entityDao.findBy(classOf[StdGpa], "std", std).headOption)
+    val gradeTypes = codeService.get(classOf[GradeType], GradeType.Usual, GradeType.Middle, GradeType.End, GradeType.Makeup, GradeType.Delay, GradeType.EndGa)
+    val publishedGradeTypes = Collections.newSet[GradeType]
+    val semesterGrades = Collections.newMap[Semester, mutable.Buffer[CourseGrade]]
+    for (cg <- grades) {
+      for (gt <- gradeTypes) {
+        cg.getGrade(gt) foreach { g =>
+          if null != g && g.published then publishedGradeTypes.add(gt)
+        }
+      }
+      val sgs = semesterGrades.getOrElseUpdate(cg.semester, Collections.newBuffer[CourseGrade])
+      sgs.addOne(cg)
+    }
+
+    given project: Project = std.project
+
+    put("style", getConfig("edu.grade.std_page_style", "normal"))
+    put("semesterGrades", semesterGrades)
+    put("grades", grades.sorted(PropertyOrdering.by("semester.code desc,course.code")))
+    put("gradeTypes", publishedGradeTypes)
+    put("std", std)
     forward()
   }
 }
