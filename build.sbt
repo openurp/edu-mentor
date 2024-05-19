@@ -1,9 +1,9 @@
-import org.openurp.parent.Dependencies._
-import org.openurp.parent.Settings._
+import org.openurp.parent.Dependencies.*
+import org.openurp.parent.Settings.*
 
 
 ThisBuild / organization := "org.openurp.edu.mentor"
-ThisBuild / version := "0.0.3-SNAPSHOT"
+ThisBuild / version := "0.0.3"
 
 ThisBuild / scmInfo := Some(
   ScmInfo(
@@ -24,15 +24,16 @@ ThisBuild / developers := List(
 ThisBuild / description := "OpenURP Edu Mentor"
 ThisBuild / homepage := Some(url("http://openurp.github.io/edu-mentor/index.html"))
 
-val apiVer = "0.38.2"
-val starterVer = "0.3.31"
-val baseVer = "0.4.23"
-val eduCoreVer = "0.2.3"
+val apiVer = "0.39.1"
+val starterVer = "0.3.32"
+val baseVer = "0.4.24"
+val eduCoreVer = "0.2.6"
+val stdCoreVer = "0.0.2"
 val openurp_edu_api = "org.openurp.edu" % "openurp-edu-api" % apiVer
 val openurp_stater_web = "org.openurp.starter" % "openurp-starter-web" % starterVer
 val openurp_base_tag = "org.openurp.base" % "openurp-base-tag" % baseVer
 val openurp_edu_core = "org.openurp.edu" % "openurp-edu-core" % eduCoreVer
-val openurp_std_core = "org.openurp.std" % "openurp-std-core" % "0.0.1"
+val openurp_std_core = "org.openurp.std" % "openurp-std-core" % stdCoreVer
 
 lazy val root = (project in file("."))
   .enablePlugins(WarPlugin, TomcatPlugin)
