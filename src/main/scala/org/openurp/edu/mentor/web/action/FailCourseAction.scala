@@ -18,7 +18,7 @@
 package org.openurp.edu.mentor.web.action
 
 import org.beangle.data.dao.OqlBuilder
-import org.beangle.web.action.view.View
+import org.beangle.webmvc.view.View
 import org.beangle.webmvc.support.action.{EntityAction, ExportSupport}
 import org.openurp.base.hr.model.Mentor
 import org.openurp.base.model.Project

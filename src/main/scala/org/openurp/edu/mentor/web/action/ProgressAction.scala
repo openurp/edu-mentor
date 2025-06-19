@@ -20,15 +20,16 @@ package org.openurp.edu.mentor.web.action
 import org.beangle.commons.collection.Collections
 import org.beangle.data.dao.OqlBuilder
 import org.beangle.doc.transfer.exporter.ExportContext
-import org.beangle.web.action.annotation.{mapping, param}
-import org.beangle.web.action.view.View
+import org.beangle.webmvc.annotation.{mapping, param}
+import org.beangle.webmvc.view.View
 import org.beangle.webmvc.support.action.{EntityAction, ExportSupport}
 import org.openurp.base.hr.model.Mentor
 import org.openurp.base.model.Project
 import org.openurp.code.edu.model.EducationLevel
 import org.openurp.code.std.model.StdType
 import org.openurp.edu.grade.model.{AuditCourseLevel, AuditCourseResult, AuditGroupResult, AuditPlanResult}
-import org.openurp.edu.mentor.web.helper.{AuditPlanResultPropertyExtractor, SeqHelper}
+import org.openurp.edu.grade.service.audit.AuditPlanResultPropertyExtractor
+import org.openurp.edu.program.service.SeqHelper
 import org.openurp.starter.web.support.MentorSupport
 import org.openurp.std.graduation.model.GraduateResult
 import org.openurp.std.graduation.service.GraduateService
