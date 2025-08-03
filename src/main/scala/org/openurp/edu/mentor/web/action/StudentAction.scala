@@ -22,9 +22,9 @@ import org.beangle.data.dao.OqlBuilder
 import org.beangle.doc.transfer.exporter.ExportContext
 import org.beangle.ems.app.Ems
 import org.beangle.webmvc.annotation.{ignore, mapping}
-import org.beangle.webmvc.view.View
 import org.beangle.webmvc.support.action.{EntityAction, ExportSupport}
 import org.beangle.webmvc.support.helper.QueryHelper
+import org.beangle.webmvc.view.View
 import org.openurp.base.hr.model.Mentor
 import org.openurp.base.model.Project
 import org.openurp.base.service.Features
@@ -35,6 +35,8 @@ import org.openurp.code.std.model.StudentStatus
 import org.openurp.edu.mentor.web.helper.StudentPropertyExtractor
 import org.openurp.starter.web.support.MentorSupport
 import org.openurp.std.info.model.{Contact, Examinee, Home}
+
+import java.time.LocalDate
 
 /** 查看学籍
  */
@@ -64,9 +66,18 @@ class StudentAction extends MentorSupport, EntityAction[Student], ExportSupport[
   protected override def getQueryBuilder: OqlBuilder[Student] = {
     val mentor = getMentor
     val project = getProject
-    val query = OqlBuilder.from(classOf[Student], "std")
-    query.where("(std.state.squad.mentor=:mentor or std.state.squad.master=:mentor or std.state.squad.tutor=:mentor)", mentor.staff)
-    query.where("std.project=:project", project)
+    val query = OqlBuilder.from(classOf[Student], "student")
+    query.where("(student.state.squad.mentor=:mentor or student.state.squad.master=:mentor)", mentor.staff)
+    query.where("student.project=:project", project)
+    val date = LocalDate.now()
+    get("status").foreach {
+      case "active" => query.where("student.beginOn<= :now and student.endOn>=:now and student.registed=true and student.state.inschool = true", date)
+      case "unactive" => query.where("student.beginOn<= :now and student.endOn>=:now and student.registed=true and student.state.inschool = false", date)
+      case "available" => query.where("student.beginOn<= :now and student.endOn>=:now and student.registed=true ", date)
+      case "unavailable" => query.where("student.beginOn> :now or student.endOn<:now or student.registed=false", date)
+      case "active_unregisted" => query.where("student.state.inschool=true and student.registed=false")
+      case "" =>
+    }
     QueryHelper.populate(query)
     query.limit(QueryHelper.pageLimit)
     query
