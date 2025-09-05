@@ -1,14 +1,20 @@
 [#ftl]
-[#if !((student.person.id)??)]
-<div style="color: red">当前学生基本信息还未配置！</div>
-[#else]
-  <table class="infoTable">
+[#if ((student.person.id)??)]
+  <table class="table table-sm table-detail" style="margin-bottom: 0px;">
+    <colgroup>
+      <col width="13%">
+      <col width="20%">
+      <col width="13%">
+      <col width="20%">
+      <col width="14%">
+      <col width="20%">
+    </colgroup>
     <tr>
-      <td class="title" width="100px">姓名:</td>
+      <td class="title">姓名:</td>
       <td>${student.name?html}</td>
-      <td class="title" width="100px">姓名拼音:</td>
+      <td class="title">姓名拼音:</td>
       <td>${(student.person.phoneticName?html)!}</td>
-      <td class="title" width="100px">曾用名:</td>
+      <td class="title">曾用名:</td>
       <td>${(student.person.formerName?html)!}</td>
     </tr>
     <tr>
@@ -25,7 +31,7 @@
       <td class="title">证件类型:</td>
       <td>${(student.person.idType.name)!}</td>
       <td class="title">证件号码:</td>
-      <td>${(student.person.code)!""}</td>
+      <td>${(student.person.code)!"<br>"}</td>
     </tr>
     <tr>
       <td class="title">籍贯:</td>
@@ -37,16 +43,22 @@
     </tr>
   </table>
 [/#if]
-[#if !((contact.id)??)]
-<div style="color: red">当前学生联系信息还未配置！</div>
-[#else]
-  <table class="infoTable">
+[#if ((contact.id)??)]
+  <table class="table table-sm table-detail">
+    <colgroup>
+      <col width="13%">
+      <col width="20%">
+      <col width="13%">
+      <col width="20%">
+      <col width="14%">
+      <col width="20%">
+    </colgroup>
     <tr>
-      <td class="title" width="100px">电子邮箱:</td>
+      <td class="title">电子邮箱:</td>
       <td>${(contact.email?html)!}</td>
-      <td class="title" width="100px">电话:</td>
+      <td class="title">电话:</td>
       <td>${(contact.phone?html)!}</td>
-      <td class="title" width="100px">移动电话:</td>
+      <td class="title">移动电话:</td>
       <td>${(contact.mobile?html)!}</td>
     </tr>
     <tr>

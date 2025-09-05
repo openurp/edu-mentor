@@ -21,15 +21,15 @@ import org.beangle.commons.collection.Collections
 import org.beangle.data.dao.OqlBuilder
 import org.beangle.doc.transfer.exporter.ExportContext
 import org.beangle.webmvc.annotation.{mapping, param}
-import org.beangle.webmvc.view.View
 import org.beangle.webmvc.support.action.{EntityAction, ExportSupport}
+import org.beangle.webmvc.view.View
 import org.openurp.base.hr.model.Mentor
 import org.openurp.base.model.Project
 import org.openurp.code.edu.model.EducationLevel
 import org.openurp.code.std.model.StdType
 import org.openurp.edu.grade.model.{AuditCourseLevel, AuditCourseResult, AuditGroupResult, AuditPlanResult}
 import org.openurp.edu.grade.service.audit.AuditPlanResultPropertyExtractor
-import org.openurp.edu.program.service.SeqHelper
+import org.openurp.edu.program.util.SeqHelper
 import org.openurp.starter.web.support.MentorSupport
 import org.openurp.std.graduation.model.GraduateResult
 import org.openurp.std.graduation.service.GraduateService
@@ -60,8 +60,8 @@ class ProgressAction extends MentorSupport, EntityAction[AuditPlanResult], Expor
     val mentor = getMentor
     val project = getProject
     val builder = super.getQueryBuilder
-    //builder.where("result.std.project=:project", project)
-    //builder.where("result.std.state.squad.mentor=:mentor or result.std.state.squad.master=:master", mentor.staff, mentor.staff)
+    builder.where("result.std.project=:project", project)
+    builder.where("result.std.state.squad.mentor=:mentor or result.std.state.squad.master=:master", mentor.staff, mentor.staff)
     getBoolean("stdActive") foreach { active =>
       val nowAt = LocalDate.now
       if (active) builder.where("result.std.beginOn <= :now and result.std.endOn >= :now and result.std.registed = true  and result.std.state.inschool=true", nowAt)

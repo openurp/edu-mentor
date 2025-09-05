@@ -5,7 +5,7 @@
 [/@]
 <div class="container text-sm">
 [#macro panel title]
-<div class="card card-info card-outline">
+<div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">${title}</h3>
   </div>
@@ -13,7 +13,7 @@
 </div>
 [/#macro]
 
-<div class="card card-info card-outline">
+<div class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">学籍信息</h3>
   </div>
