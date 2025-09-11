@@ -18,6 +18,7 @@
 package org.openurp.edu.mentor.web.action
 
 import org.beangle.commons.codec.digest.Digests
+import org.beangle.commons.lang.Strings
 import org.beangle.data.dao.OqlBuilder
 import org.beangle.doc.transfer.exporter.ExportContext
 import org.beangle.ems.app.Ems
@@ -78,6 +79,17 @@ class StudentAction extends MentorSupport, EntityAction[Student], ExportSupport[
       case "active_unregisted" => query.where("student.state.inschool=true and student.registed=false")
       case "" =>
     }
+    //查询导师
+    get("tutor.name").foreach(n => {
+      if (Strings.isNotBlank(n)) {
+        val names = Strings.split(n)
+        if (names.length == 1) {
+          query.where("exists(from student.tutors t where t.tutor.name like :tutorName)", s"%${n.trim()}%")
+        } else {
+          query.where("exists(from student.tutors t where t.tutor.name in(:tutorNames))", names)
+        }
+      }
+    })
     QueryHelper.populate(query)
     query.limit(QueryHelper.pageLimit)
     query
