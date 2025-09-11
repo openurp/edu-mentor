@@ -2,15 +2,15 @@
   [@b.form name="studentListForm" action="!search"]
     [@b.grid items=students var="student" sortable="true"]
       [@b.gridbar]
-        var titles="gender.name_person:性别,birthday_person:出生日期,nation.name_person:民族,country.name_person:国家地区,"+
-                   "idType.name_person:证件类型,code_person:证件号码,politicalStatus.name_person:政治面貌,code_std:学号,"+
-                   "name_std:姓名,state.grade.code_std:年级,studyType.name_std:学习形式,duration_std:学制,"+
-                   "level.name_std:培养层次,stdType.name_std:学生类别,eduType.name_std:培养类型,"+
-                   "state.department.name_std:院系,state.major.name_std:专业,state.direction.name_std:专业方向,"+
-                   "studyOn_std:入校日期,graduateOn_std:预计毕业日期,state.status.name_std:学籍状态,tutor.name_std:导师姓名,"+
-                   "advisor.name_std:学位论文导师姓名,mobile_contact:手机,address_contact:联系地址,email_contact:电子邮箱,"+
-                   "code_examinee:考生号,examNo_examinee:准考证号,educationMode.name_examinee:培养方式,"+
-                   "originDivision.name_examinee:生源地,client_examinee:委培单位"
+        var titles="person_gender.name:性别,person.birthday:出生日期,person.nation.name:民族,person.country.name:国家地区,"+
+                   "person.idType.name:证件类型,person.code:证件号码,person.politicalStatus.name:政治面貌,std_code:学号,"+
+                   "std_name:姓名,std_state.grade.code:年级,std_studyType.name:学习形式,std_duration:学制,"+
+                   "std_level.name:培养层次,std_stdType.name:学生类别,std_eduType.name:培养类型,"+
+                   "std_state.department.name:院系,std_state.major.name:专业,std_state.direction.name:专业方向,"+
+                   "std_studyOn:入校日期,std_graduateOn:预计毕业日期,std_state.status.name:学籍状态,std_majorTutorNames:导师姓名,"+
+                   "std_thesisTutor.name:学位论文导师姓名,contact_mobile:手机,contact_address:联系地址,contact_email:电子邮箱,"+
+                   "examinee_code:考生号,examinee_examNo:准考证号,examinee_educationMode.name:培养方式,"+
+                   "examinee_originDivision.name:生源地,examinee_client:委培单位"
         bar.addItem("${b.text('action.export')}",action.exportData(titles,null,'fileName=学籍信息'));
       [/@]
       [@b.row]

@@ -40,12 +40,12 @@ class StudentPropertyExtractor(entityDao: EntityDao) extends DefaultPropertyExtr
   override def get(target: Object, property: String): Any = {
     val student = target.asInstanceOf[Student]
     val secptions = property.split("_")
-    val fieldName = secptions(0)
-    val className = secptions(1)
+    val className = secptions(0)
+    val fieldName = secptions(1)
     if ("std" == className) {
-      if ("code_std" == property) {
+      if ("std_code" == property) {
         return student.code
-      } else if ("labels_std" == property) {
+      } else if ("std_labels" == property) {
         val labelValue = new StringBuilder
         student.labels.keySet.foreach(labelType => {
           if (labelValue.nonEmpty) {
