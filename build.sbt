@@ -3,7 +3,7 @@ import org.openurp.parent.Settings.*
 
 
 ThisBuild / organization := "org.openurp.edu.mentor"
-ThisBuild / version := "0.0.6-SNAPSHOT"
+ThisBuild / version := "0.0.6"
 
 ThisBuild / scmInfo := Some(
   ScmInfo(
