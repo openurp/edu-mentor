@@ -70,7 +70,7 @@ class GradeAction extends MentorSupport, EntityAction[CourseGrade], ExportSuppor
 
   def student(): View = {
     val std = entityDao.get(classOf[Student], getLongId("student"))
-    val grades = courseGradeProvider.getPublished(std)
+    val grades = courseGradeProvider.get(std)
     put("stdGpa", entityDao.findBy(classOf[StdGpa], "std", std).headOption)
     val gradeTypes = codeService.get(classOf[GradeType], GradeType.Usual, GradeType.Middle, GradeType.End, GradeType.Makeup, GradeType.Delay, GradeType.EndGa)
     val publishedGradeTypes = Collections.newSet[GradeType]
